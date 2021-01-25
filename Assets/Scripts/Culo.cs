@@ -7,7 +7,7 @@ public class Culo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        print("El gameobject llamado" + gameObject.name + " tiene culo.");
     }
 
     // Update is called once per frame
