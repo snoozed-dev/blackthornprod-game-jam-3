@@ -152,6 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e37cb5b3540ce29468a3a700f204fd03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 5.61
+  mouseSensitivity: 3.95
 --- !u!4 &391948059
 Transform:
   m_ObjectHideFlags: 0
@@ -340,7 +342,7 @@ Camera:
     height: 1
   near clip plane: 0.13
   far clip plane: 1000
-  field of view: 60
+  field of view: 100
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
