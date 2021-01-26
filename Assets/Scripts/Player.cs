@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     float verticalLookRotation;
     Transform cameraTransform;
     Rigidbody rigidbody;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -44,8 +45,6 @@ public class Player : MonoBehaviour
         float moveX = Input.GetAxis("Horizontal") * moveSpeed * Time.fixedDeltaTime;
         float moveY = Input.GetAxis("Vertical") * moveSpeed * Time.fixedDeltaTime;
         rigidbody.MovePosition(rigidbody.position + transform.TransformDirection(new Vector3(moveX, 0, moveY)));
-
-
     }
 
     void CameraControl()
