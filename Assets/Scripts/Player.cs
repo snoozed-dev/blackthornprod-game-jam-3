@@ -15,7 +15,12 @@ public class Player : MonoBehaviour
     void Update()
     {
         CameraControl();
+        MovementControl();
+        MetaControls();
+    }
 
+    void MovementControl()
+    {
         float moveX = Input.GetAxis("Horizontal") * (moveSpeed / 100);
         float moveY = Input.GetAxis("Vertical") * (moveSpeed / 100);
         transform.Translate(new Vector3(moveX,0,moveY));
@@ -23,11 +28,15 @@ public class Player : MonoBehaviour
 
     void CameraControl()
     {
-        // MIRAR COSTADOS
+        Transform cameraTransform = GetComponentInChildren<Camera>().transform;
         float lookX = Input.GetAxis("Look-X") * mouseSensitivity;
         float lookY = Input.GetAxis("Look-Y") * mouseSensitivity;
+        Quaternion y = Quaternion.AngleAxis(lookY, -Vector3.right);
+        Quaternion targetY = cameraTransform.rotation * y;
+        print(Quaternion.Angle(cameraTransform.rotation, targetY));
+        if (Quaternion.Angle(cameraTransform.rotation, targetY) < 90) cameraTransform.rotation = targetY;
         transform.Rotate(Vector3.up * lookX);
-        GetComponentInChildren<Camera>().transform.Rotate(-Vector3.right * lookY);
+        // newVerticalRotation = Mathf.Clamp(newVerticalRotation, -90,90);
     }
 
     void MetaControls()
