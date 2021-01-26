@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     float verticalLookRotation;
     Transform cameraTransform;
     Rigidbody rigidbody;
+    bool isGrounded = false;
 
     void Start()
     {
@@ -26,6 +27,7 @@ public class Player : MonoBehaviour
         CameraControl();
         MetaControls();
         MovementControl();
+        isGrounded = Physics.Raycast(new Ray(transform.position + Vector3.up * .2f, Vector3.down), .5f);
     }
 
     void FixedUpdate()
@@ -35,8 +37,9 @@ public class Player : MonoBehaviour
     void MovementControl()
     {
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && isGrounded)
         {
+            // TODO: se puede saltar super alto con macros
             rigidbody.AddForce(Vector3.up * jumpForce);
         }
     }
