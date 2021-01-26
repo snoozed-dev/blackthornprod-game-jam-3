@@ -6,37 +6,56 @@ using UnityEditor;
 public class Player : MonoBehaviour
 {
     public float moveSpeed = 4f;
-    public float mouseSensitivity = 7f;
+    public float mouseSensitivity = 1000f;
+    public float verticalClamp = 80f;
+    public float jumpForce = 320f;
+
+    float verticalLookRotation;
+    Transform cameraTransform;
+    Rigidbody rigidbody;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        cameraTransform = GetComponentInChildren<Camera>().transform;
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
         CameraControl();
-        MovementControl();
         MetaControls();
+        MovementControl();
     }
 
+    void FixedUpdate()
+    {
+        FixedMovementControl();    
+    }
     void MovementControl()
     {
-        float moveX = Input.GetAxis("Horizontal") * (moveSpeed / 100);
-        float moveY = Input.GetAxis("Vertical") * (moveSpeed / 100);
-        transform.Translate(new Vector3(moveX,0,moveY));
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            rigidbody.AddForce(Vector3.up * jumpForce);
+        }
+    }
+    void FixedMovementControl()
+    {
+        float moveX = Input.GetAxis("Horizontal") * moveSpeed * Time.fixedDeltaTime;
+        float moveY = Input.GetAxis("Vertical") * moveSpeed * Time.fixedDeltaTime;
+        rigidbody.MovePosition(rigidbody.position + transform.TransformDirection(new Vector3(moveX, 0, moveY)));
     }
 
     void CameraControl()
     {
-        Transform cameraTransform = GetComponentInChildren<Camera>().transform;
-        float lookX = Input.GetAxis("Look-X") * mouseSensitivity;
-        float lookY = Input.GetAxis("Look-Y") * mouseSensitivity;
-        Quaternion y = Quaternion.AngleAxis(lookY, -Vector3.right);
-        Quaternion targetY = cameraTransform.rotation * y;
-        print(Quaternion.Angle(cameraTransform.rotation, targetY));
-        if (Quaternion.Angle(cameraTransform.rotation, targetY) < 90) cameraTransform.rotation = targetY;
+        float lookX = Input.GetAxis("Look-X") * mouseSensitivity * Time.deltaTime;
         transform.Rotate(Vector3.up * lookX);
-        // newVerticalRotation = Mathf.Clamp(newVerticalRotation, -90,90);
+
+        float lookY = Input.GetAxis("Look-Y") * mouseSensitivity * Time.deltaTime;
+        verticalLookRotation += lookY;
+        verticalLookRotation = Mathf.Clamp(verticalLookRotation, -verticalClamp, verticalClamp);
+        cameraTransform.localEulerAngles = Vector3.left * verticalLookRotation;
     }
 
     void MetaControls()
@@ -44,7 +63,7 @@ public class Player : MonoBehaviour
         // SALIR DEL JUEGITO
         if (Input.GetButton("Cancel"))
         {
-            EditorApplication.ExitPlaymode();
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 }
