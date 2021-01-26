@@ -5,8 +5,8 @@ using UnityEditor;
 
 public class Player : MonoBehaviour
 {
-    float moveSpeed = 7f;
-    float mouseSensitivity = 7f;
+    public float moveSpeed = 4f;
+    public float mouseSensitivity = 7f;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
