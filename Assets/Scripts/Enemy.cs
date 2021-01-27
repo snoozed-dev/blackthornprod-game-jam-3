@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
 
     void AIControl()
     {
-        Vector3 playerPosition = FindObjectOfType<Player>().transform.position;
+        Vector3 playerPosition = FindObjectOfType<PlayerController>().transform.position;
         transform.LookAt(new Vector3(playerPosition.x, 0, playerPosition.z));
         transform.position += transform.forward * speed * Time.deltaTime;
     }
