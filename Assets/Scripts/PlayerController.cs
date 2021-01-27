@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviour
         {
             characterVelocity = Vector3.ProjectOnPlane(characterVelocity, Vector3.up) + Vector3.up * jumpForce;
             if (!characterController.isGrounded) canSecondJump = false;
+            characterHorizontalVelocityOnAir = Vector3.ProjectOnPlane(characterVelocity, Vector3.up);
         }
         if (characterController.isGrounded) canSecondJump = true;
 
@@ -100,12 +101,9 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            characterVelocity += (moveInput / 10) * moveSpeed;
 
             float verticalVelocity = characterVelocity.y;
-            characterHorizontalVelocityOnAir = Vector3.ProjectOnPlane(characterVelocity, Vector3.up);
-            characterHorizontalVelocityOnAir = Vector3.ClampMagnitude(characterHorizontalVelocityOnAir, moveSpeed);
-            characterHorizontalVelocityOnAir = Vector3.Lerp(characterHorizontalVelocityOnAir, moveInput, decelerationSpeedOnAir * Time.deltaTime);
+            characterHorizontalVelocityOnAir = Vector3.Lerp(characterHorizontalVelocityOnAir, moveInput * moveSpeed, decelerationSpeedOnAir * Time.deltaTime);
             characterVelocity = characterHorizontalVelocityOnAir + (Vector3.up * verticalVelocity);
 
             characterVelocity += Vector3.down * gravity * Time.deltaTime;
