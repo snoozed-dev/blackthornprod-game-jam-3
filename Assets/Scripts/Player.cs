@@ -61,7 +61,6 @@ public class Player : MonoBehaviour
             Physics.Raycast(new Ray(cameraTransform.position, cameraTransform.forward), out hit);
             if (hit.collider)
             {
-
             }
         }
 
