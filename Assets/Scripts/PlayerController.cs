@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour
 
     PlayerInputManager inputManager;
 
+    bool isGrounded;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -39,6 +41,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        GoundControl();
         CameraControl();
         MetaControls();
         MovementControl();
@@ -62,6 +65,19 @@ public class PlayerController : MonoBehaviour
         IS -= Time.deltaTime * ISDecreaseRate;
         ISIndicator.text = Mathf.Round(IS).ToString();
     }
+    void GoundControl()
+    {
+        if (characterController.isGrounded)
+        {
+            if (!isGrounded) characterHorizontalVelocityOnAir = Vector3.zero;
+            isGrounded = true;
+        }
+        else
+        {
+            if (isGrounded) characterHorizontalVelocityOnAir = Vector3.ProjectOnPlane(characterVelocity, Vector3.up);
+            isGrounded = false;
+        }
+    }
 
     void ShootControl()
     {
@@ -82,19 +98,18 @@ public class PlayerController : MonoBehaviour
     }
     void MovementControl()
     {
-        if (Input.GetButtonDown("Jump") && (characterController.isGrounded || canSecondJump))
+        if (Input.GetButtonDown("Jump") && (isGrounded || canSecondJump))
         {
             characterVelocity = Vector3.ProjectOnPlane(characterVelocity, Vector3.up) + Vector3.up * jumpForce;
             if (!characterController.isGrounded) canSecondJump = false;
-            characterHorizontalVelocityOnAir = Vector3.ProjectOnPlane(characterVelocity, Vector3.up);
         }
-        if (characterController.isGrounded) canSecondJump = true;
+        if (isGrounded) canSecondJump = true;
 
 
 
         Vector3 moveInput = transform.TransformVector(inputManager.GetMoveInput());
 
-        if (characterController.isGrounded)
+        if (isGrounded)
         {
             moveInput *= moveSpeed;
             characterVelocity = Vector3.Lerp(characterVelocity, moveInput, 15f * Time.deltaTime);
