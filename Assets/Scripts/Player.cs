@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     float verticalLookRotation;
     Transform cameraTransform;
     CharacterController characterController;
+    public bool canDie;
     bool canSecondJump;
 
     void Start()
@@ -40,11 +41,21 @@ public class Player : MonoBehaviour
         ShootControl();
 
         ISControl();
+        if (canDie) HealthControl();
     }
 
     void FixedUpdate()
     {
         FixedMovementControl();
+    }
+
+    void HealthControl()
+    {
+        if (IS <= 0)
+        {
+            Destroy(gameObject);
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
 
     void ISControl()
@@ -61,6 +72,11 @@ public class Player : MonoBehaviour
             Physics.Raycast(new Ray(cameraTransform.position, cameraTransform.forward), out hit);
             if (hit.collider)
             {
+                if (hit.collider.GetComponent<Enemy>())
+                {
+                    hit.collider.GetComponent<Enemy>().GetDamaged(IS);
+                    IS -= ISDecreaseShootAmount;
+                }
             }
         }
 
