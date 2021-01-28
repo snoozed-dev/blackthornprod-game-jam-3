@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public float gravity = 12f;
     float verticalLookRotation;
     Vector3 characterHorizontalVelocityOnAir;
-    Vector3 characterVelocity;
+    public Vector3 characterVelocity;
     Transform cameraTransform;
     CharacterController characterController;
     public bool canDie;
@@ -84,7 +84,8 @@ public class PlayerController : MonoBehaviour
         if (inputManager.GetFireDown())
         {
             RaycastHit hit;
-            Physics.Raycast(new Ray(cameraTransform.position, cameraTransform.forward), out hit);
+            Physics.Raycast(new Ray(cameraTransform.position, cameraTransform.forward), out hit, 100, ~(1 << 9));
+            GetComponentInChildren<GunController>().AnimateShoot(IS, hit.point);
             if (hit.collider)
             {
                 if (hit.collider.GetComponent<Enemy>())
