@@ -27,7 +27,12 @@ public class Enemy : MonoBehaviour
 
     void HealthControl()
     {
-        if (health <= 0) Destroy(gameObject);
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+
+            Instantiate(Resources.Load("Prefabs/EdibleCupcake"), transform.position, Quaternion.Euler(0, 0, 0));
+        }
 
     }
 

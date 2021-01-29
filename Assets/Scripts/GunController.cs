@@ -26,7 +26,7 @@ public class GunController : MonoBehaviour
     }
     void Update()
     {
-        // sway
+        // sway  
         elastic = FindObjectOfType<PlayerController>().characterVelocity / 20;
         float verticalVelocity = elastic.y;
         Vector3 horizontalVelocity = Vector3.ProjectOnPlane(elastic, Vector3.up) / 5;

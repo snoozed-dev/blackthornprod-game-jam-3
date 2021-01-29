@@ -88,14 +88,20 @@ public class PlayerController : MonoBehaviour
             GetComponentInChildren<GunController>().AnimateShoot(IS, hit.point);
             if (hit.collider)
             {
-                if (hit.collider.GetComponent<Enemy>())
+                Hitbox hitbox = hit.collider.GetComponent<Hitbox>();
+                if (hitbox)
                 {
-                    hit.collider.GetComponent<Enemy>().GetDamaged(IS);
+                    hitbox.HurtParent(IS);
                 }
             }
             IS -= ISDecreaseShootAmount;
         }
 
+    }
+
+    public void EatCupcake()
+    {
+        IS += 100;
     }
     void MovementControl()
     {
