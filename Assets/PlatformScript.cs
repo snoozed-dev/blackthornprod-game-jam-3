@@ -6,13 +6,8 @@ public class PlatformScript : MonoBehaviour
 {
     public float verticalSpeed = 1f;
 
-    Rigidbody rigidbody;
-    void Start()
+    void FixedUpdate()
     {
-        rigidbody = GetComponent<Rigidbody>();
-    }
-    void Update()
-    {
-        rigidbody.MovePosition(rigidbody.position + Vector3.up * verticalSpeed * Time.deltaTime);
+        transform.position += Vector3.up * verticalSpeed * Time.fixedDeltaTime;
     }
 }

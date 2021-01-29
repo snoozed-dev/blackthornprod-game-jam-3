@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour
     void AIControl()
     {
         Vector3 playerPosition = FindObjectOfType<PlayerController>().transform.position;
-        transform.LookAt(new Vector3(playerPosition.x, 0, playerPosition.z));
+        transform.LookAt(new Vector3(playerPosition.x, transform.position.y, playerPosition.z));
         transform.position += transform.forward * speed * Time.deltaTime;
     }
 
@@ -29,9 +29,9 @@ public class Enemy : MonoBehaviour
     {
         if (health <= 0)
         {
+            GameObject cupcake = Instantiate(Resources.Load("Prefabs/EdibleCupcake"), transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+            cupcake.transform.parent = transform.parent;
             Destroy(gameObject);
-
-            Instantiate(Resources.Load("Prefabs/EdibleCupcake"), transform.position, Quaternion.Euler(0, 0, 0));
         }
 
     }
