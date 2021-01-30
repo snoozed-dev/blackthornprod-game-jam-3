@@ -60,7 +60,7 @@ public class GunController : MonoBehaviour
         {
             if (hit.GetComponent<Rigidbody>())
             {
-                hit.GetComponent<Rigidbody>().AddForce(point + (point - transform.position).normalized * strenght);
+                hit.GetComponent<Rigidbody>().AddForce((point - cameraTransform.position).normalized * strenght);
             }
         }
     }
